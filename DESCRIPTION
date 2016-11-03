@@ -11,7 +11,7 @@ Author: Akhtar Hossain [aut, cre],
         Hrishikesh Chakraborty [aut]
 Maintainer: Akhtar Hossain <mhossain@email.sc.edu>
 Imports: stats
-Description: Assists in generating binary clustered data, computes estimtes of Intracluster Correlation coefficient (ICC) for binary response in 14 different methods, and 4 different types of confidence intervals.
+Description: Assists in generating binary clustered data, estimates of Intracluster Correlation coefficient (ICC) for binary response in 14 different methods, and 4 different types of confidence intervals.
 License: GPL (>= 2)
 URL: https://github.com/akhtarh/ICCbin.git
 BugReports: https://github.com/akhtarh/ICCbin/issues

@@ -64,14 +64,6 @@
 
 iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", "keqs", "kprs", "stab", "ub", "fc", "mak",
                                                    "peq", "pgp", "ppr", "rm"), ci.type = c("aov", "fc", "peq", "rm"), alpha = 0.05, kappa = 0.45){
-  #cid <- "cid"
-  #y <- "y"
-  #data = dt
-  #method = c("aov", "aovs", "keq", "kpr", "keqs", "kprs", "stab", "ub", "fc", "mak",
-  #           "peq", "pgp", "ppr", "rm")
-  #ci.type = c("aov", "fc", "peq", "rm")
-  #alpha = .05
-  #kappa = 0.45
 
   ic <- list(cid = substitute(cid), y = substitute(y))
 
@@ -297,7 +289,7 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
   yi <- aggregate(y, by = list(cid), sum)[ , 2]
   ni <- as.vector(table(cid))
   piio <- sum(yi)/sum(ni)
-  rho.fc <- (1/((N - k)*piio*(1 - piio)))*sum(yi*(ni - yi)/ni)
+  rho.fc <- 1 - (1/((N - k)*piio*(1 - piio)))*sum(yi*(ni - yi)/ni)
   if("fc" %in% method){
     meth <- c(meth, "Fleiss-Cuzick Kappa Type Estimator")
     if(rho.fc < 0 | rho.fc > 1){
