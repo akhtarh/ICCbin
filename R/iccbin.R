@@ -1,10 +1,10 @@
 #' Estimate Intracluster Correlation coefficient (ICC) and it's confidence intervals
 #'
-#' Estimates Intracluster Correlation coefficients in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
+#' Estimates Intracluster Correlation Coefficients (ICC) in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
 #'
 #' @param cid Column name indicating cluster id in the dataframe \code{data}
 #' @param y Column name indicating binary response in the dataframe \code{data}
-#' @param data A dataframe containing \code{code} and \code{y}
+#' @param data A dataframe containing \code{cid} and \code{y}
 #' @param method The method to be used to compute ICC. A single or multiple methods can be used together. By default, all 14 methods will be used. See Details section for more.
 #' @param ci.type Type of confidence interval to be computed. By default all 4 types will be reported. See Detail section for more
 #' @param alpha The alpha level to be used when computing confidence interval. Default is 0.05
@@ -19,7 +19,7 @@
 #' @details The method \code{kpr} computes moment estimate of ICC suggested by Kleinman (1973), uses weights proportionto cluster size \eqn{w_{i} = n_{i}/N}
 #' @details The method \code{keqs} gives a modified moment estimate of ICC with equal weights (\code{keq}) (see Kleinman, 1973)
 #' @details The method \code{kprs} gives a modified moment estimate of ICC with weights proportional to cluster size (\code{kpr}) (see Kleinman, 1973)
-#' @details The method \code{stab} provides a stabilizestimate of ICC proposed by Tamura and Young (1987)
+#' @details The method \code{stab} provides a stabilized estimate of ICC proposed by Tamura and Young (1987)
 #' @details The method \code{ub} computes moment estimate of ICC from an unbiased estimating equation (see Yamamoto and Yanagimoto, 1992)
 #' @details The method \code{fc} gives Fleiss-Cuzick estimate of ICC (see Fleiss and Cuzick, 1979)
 #' @details The method \code{mak} computes Mak's estimate of ICC (see Mak, 1988)
