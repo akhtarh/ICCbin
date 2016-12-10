@@ -13,7 +13,7 @@ iccbin(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", "keqs",
 
 \item{y}{Column name indicating binary response in the dataframe \code{data}}
 
-\item{data}{A dataframe containing \code{code} and \code{y}}
+\item{data}{A dataframe containing \code{cid} and \code{y}}
 
 \item{method}{The method to be used to compute ICC. A single or multiple methods can be used together. By default, all 14 methods will be used. See Details section for more.}
 
@@ -28,7 +28,7 @@ iccbin(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", "keqs",
 \item{ci}{A dataframe containing names of confidence interval types and corresponding estimated confidence intervals}
 }
 \description{
-Estimates Intracluster Correlation coefficients in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
+Estimates Intracluster Correlation Coefficients (ICC) in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
 }
 \details{
 If in the dataframe, the cluster id (\code{cid}) is not a factor, it will be changed to a factor and a warning message will be given
@@ -49,7 +49,7 @@ The method \code{keqs} gives a modified moment estimate of ICC with equal weight
 
 The method \code{kprs} gives a modified moment estimate of ICC with weights proportional to cluster size (\code{kpr}) (see Kleinman, 1973)
 
-The method \code{stab} provides a stabilizestimate of ICC proposed by Tamura and Young (1987)
+The method \code{stab} provides a stabilized estimate of ICC proposed by Tamura and Young (1987)
 
 The method \code{ub} computes moment estimate of ICC from an unbiased estimating equation (see Yamamoto and Yanagimoto, 1992)
 

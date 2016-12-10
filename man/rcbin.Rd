@@ -7,7 +7,7 @@
 rcbin(prop = 0.5, prvar = 0, noc, csize, csvar = 0, rho)
 }
 \arguments{
-\item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event in interest, default is 0.5}
+\item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event of interest, default is 0.5}
 
 \item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default is 0}
 
