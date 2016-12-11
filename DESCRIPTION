@@ -2,7 +2,7 @@ Package: ICCbin
 Version: 1.0
 Date: 2016-12-10
 Type: Package
-Title: 'Facilitates Clustered Binary Data Generation, and Estimation of Intracluster Correlation Coefficient (ICC) for Binary Data
+Title: Facilitates Clustered Binary Data Generation, and Estimation of Intracluster Correlation Coefficient (ICC) for Binary Data
 Authors@R: c(person("Akhtar", "Hossain", role = c("aut", "cre"),
 		     email = "mhossain@email.sc.edu"),
 	       person("Hrishikesh", "Chakraborty", role = "aut",
