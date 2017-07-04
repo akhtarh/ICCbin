@@ -5,82 +5,91 @@
 \title{Estimate Intracluster Correlation coefficient (ICC) and it's confidence intervals}
 \usage{
 iccbin(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", "keqs",
-  "kprs", "stab", "ub", "fc", "mak", "peq", "pgp", "ppr", "rm"),
-  ci.type = c("aov", "fc", "peq", "rm"), alpha = 0.05, kappa = 0.45)
+  "kprs", "stab", "ub", "fc", "mak", "peq", "pgp", "ppr", "rm", "lin", "sim"),
+  ci.type = c("aov", "wal", "fc", "peq", "rm"), alpha = 0.05,
+  kappa = 0.45, nAGQ = 1, M = 1000)
 }
 \arguments{
 \item{cid}{Column name indicating cluster id in the dataframe \code{data}}
 
 \item{y}{Column name indicating binary response in the dataframe \code{data}}
 
-\item{data}{A dataframe containing \code{cid} and \code{y}}
+\item{data}{A dataframe containing \code{code} and \code{y}}
 
 \item{method}{The method to be used to compute ICC. A single or multiple methods can be used together. By default, all 14 methods will be used. See Details section for more.}
 
 \item{ci.type}{Type of confidence interval to be computed. By default all 4 types will be reported. See Detail section for more}
 
-\item{alpha}{The alpha level to be used when computing confidence interval. Default is 0.05}
+\item{alpha}{The significance level to be used when computing confidence interval. Default value is 0.05}
 
-\item{kappa}{Value of Kappa to be used in computing Stabilized ICC when the method \code{stab} is chosen. Default is 0.45}
+\item{kappa}{Value of Kappa to be used in computing Stabilized ICC when the method \code{stab} is chosen. Default value is 0.45}
+
+\item{nAGQ}{An integer scaler, as in \code{glmer} function of package \code{lme4}, denoting the number of points per axis for evaluating the adaptive Gauss-Hermite approximation to the log-likelihood. Defaults value us 1.
+Used when the method \code{lin} is chosen. Default value is 1}
+
+\item{M}{Number of Monte Carlo replicates used in method \code{sim}. Default is 1000}
 }
 \value{
 \item{estimates}{A dataframe containing the name of methods used and corresponding estimates of Intracluster Correlation coefficients}
 \item{ci}{A dataframe containing names of confidence interval types and corresponding estimated confidence intervals}
 }
 \description{
-Estimates Intracluster Correlation Coefficients (ICC) in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
+Estimates Intracluster Correlation coefficients in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
 }
 \details{
 If in the dataframe, the cluster id (\code{cid}) is not a factor, it will be changed to a factor and a warning message will be given
 
-If estimate of ICC in any method is outside the interval [0, 1], the estimate and corresponding confidence interval (if appropriate) and warning messages will be produced
+If estimate of ICC in any method is outside the interval [0, 1], the estimate and corresponding confidence interval (if appropriate) will not be provided and warning messages will be produced
 
 If the lower limit of any confidence interval is below 0 and upper limit is above 1, they will be replaced by 0 and 1 respectively and warning message will be produced
 
-The method \code{aov} computes the analysis of variance estimate of ICC. This estimator was originally proposed for continuous variables, but various authors (e.g. Elston, 1977) have suggested it's use for binary variables
+Method \code{aov} computes the analysis of variance estimate of ICC. This estimator was originally proposed for continuous variables, but various authors (e.g. Elston, 1977) have suggested it's use for binary variables
 
-The method \code{aovs} gives estimate of ICC using a modification of analysis of variance technique (see Fleiss, 1981)
+Method \code{aovs} gives estimate of ICC using a modification of analysis of variance technique (see Fleiss, 1981)
 
-The method \code{keq} computes moment estimate of ICC suggested by Kleinman (1973), uses equal weight, \eqn{w_{i} = 1/k} for each of \eqn{k} clusters
+Method \code{keq} computes moment estimate of ICC suggested by Kleinman (1973), uses equal weight, \eqn{w_{i} = 1/k} for each of \eqn{k} clusters
 
-The method \code{kpr} computes moment estimate of ICC suggested by Kleinman (1973), uses weights proportionto cluster size \eqn{w_{i} = n_{i}/N}
+Method \code{kpr} computes moment estimate of ICC suggested by Kleinman (1973), uses weights proportional to cluster size \eqn{w_{i} = n_{i}/N}
 
-The method \code{keqs} gives a modified moment estimate of ICC with equal weights (\code{keq}) (see Kleinman, 1973)
+Method \code{keqs} gives a modified moment estimate of ICC with equal weights (\code{keq}) (see Kleinman, 1973)
 
-The method \code{kprs} gives a modified moment estimate of ICC with weights proportional to cluster size (\code{kpr}) (see Kleinman, 1973)
+Method \code{kprs} gives a modified moment estimate of ICC with weights proportional to cluster size (\code{kpr}) (see Kleinman, 1973)
 
-The method \code{stab} provides a stabilized estimate of ICC proposed by Tamura and Young (1987)
+Method \code{stab} provides a stabilizestimate of ICC proposed by Tamura and Young (1987)
 
-The method \code{ub} computes moment estimate of ICC from an unbiased estimating equation (see Yamamoto and Yanagimoto, 1992)
+Method \code{ub} computes moment estimate of ICC from an unbiased estimating equation (see Yamamoto and Yanagimoto, 1992)
 
-The method \code{fc} gives Fleiss-Cuzick estimate of ICC (see Fleiss and Cuzick, 1979)
+Method \code{fc} gives Fleiss-Cuzick estimate of ICC (see Fleiss and Cuzick, 1979)
 
-The method \code{mak} computes Mak's estimate of ICC (see Mak, 1988)
+Method \code{mak} computes Mak's estimate of ICC (see Mak, 1988)
 
-The method \code{peq} computes weighted correlation estimate of ICC proposed by karlin, Cameron, and Williams (1981) using equal weight to every pair of observations
+Method \code{peq} computes weighted correlation estimate of ICC proposed by Karlin, Cameron, and Williams (1981) using equal weight to every pair of observations
 
-The method \code{pgp} computes weighted correlation estimate of ICC proposed by karlin, Cameron, and Williams (1981) using equal weight to each cluster irrespective of size
+Method \code{pgp} computes weighted correlation estimate of ICC proposed by Karlin, Cameron, and Williams (1981) using equal weight to each cluster irrespective of size
 
-The method \code{ppr} computes weighted correlation estimate of ICC proposed by karlin, Cameron, and Williams (1981) by weighting each pair according to the total number of pairs in which the individuals appear
+Method \code{ppr} computes weighted correlation estimate of ICC proposed by Karlin, Cameron, and Williams (1981) by weighting each pair according to the total number of pairs in which the individuals appear
 
-The method \code{rm} estimates ICC using resampling method proposed by Chakraborty and Sen (2016)
+Method \code{rm} estimates ICC using resampling method proposed by Chakraborty and Sen (2016)
 
-The CI type \code{aov} computes confidence interval for ICC using Simith's large sample approximation (see Smith, 1957)
+Method \code{lin} estimates ICC using model linearization proposed by Goldstein et al. (2002)
 
-The CI type \code{fc} gives Fleiss-Cuzick confidence interval for ICC (see Fleiss and Cuzick, 1979)
+Method \code{sim} estimates ICC using Monte Carlo simulation proposed by Goldstein et al. (2002)
 
-The CI type \code{peq} estimates confidenc einterval for ICC based on direct calculation of correlation between observations within clusters (see Wu, Crespi, and Wong, 2012)
+CI type \code{aov} computes confidence interval for ICC using Simith's large sample approximation (see Smith, 1957)
 
-The CI type \code{rm} gives confidence interval for ICC using resampling method by Chakraborty and Sen (2016)
+CI type \code{wal} computes confidence interval for ICC using modified Wald test, see Zou and Donner (2004).
+
+CI type \code{fc} gives Fleiss-Cuzick confidence interval for ICC (see Fleiss and Cuzick, 1979; and Zou and Donner, 2004)
+
+CI type \code{peq} estimates confidence interval for ICC based on direct calculation of correlation between observations within clusters (see Zou and Donner, 2004; and Wu, Crespi, and Wong, 2012)
+
+CI type \code{rm} gives confidence interval for ICC using resampling method by Chakraborty and Sen (2016)
 }
 \examples{
 bccdata <- rcbin(prop = .4, prvar = .2, noc = 30, csize = 20, csvar = .2, rho = .2)
 iccbin(cid = cid, y = y, data = bccdata)
 iccbin(cid = cid, y = y, data = bccdata, method = c("aov", "fc"), ci.type = "fc")
 
-}
-\author{
-Akhtar Hossain \email{mhossain@email.sc.edu}
 }
 \references{
 Chakraborty, H. and Sen, P.K., 2016. Resampling method to estimate intra-cluster correlation for clustered binary data. Communications in Statistics-Theory and Methods, 45(8), pp.2368-2377.
@@ -90,6 +99,8 @@ Elston, R.C., Hill, W.G. and Smith, C., 1977. Query: Estimating" Heritability" o
 Fleiss, J.L., Levin, B. and Paik, M.C., 2013. Statistical methods for rates and proportions. John Wiley & Sons.
 
 Fleiss, J.L. and Cuzick, J., 1979. The reliability of dichotomous judgments: Unequal numbers of judges per subject. Applied Psychological Measurement, 3(4), pp.537-542.
+
+Goldstein, H., Browne, W., Rasbash, J., 2002. Partitioning variation in multilevel models, Understanding Statistics: Statistical Issues in Psychology, Education, and the Social Sciences, 1 (4), pp.223-231.
 
 Karlin, S., Cameron, E.C. and Williams, P.T., 1981. Sibling and parent--offspring correlation estimation with variable family size. Proceedings of the National Academy of Sciences, 78(5), pp.2664-2668.
 
@@ -104,8 +115,14 @@ Tamura, R.N. and Young, S.S., 1987. A stabilized moment estimator for the beta-b
 Wu, S., Crespi, C.M. and Wong, W.K., 2012. Comparison of methods for estimating the intraclass correlation coefficient for binary responses in cancer prevention cluster randomized trials. Contemporary clinical trials, 33(5), pp.869-880.
 
 Yamamoto, E. and Yanagimoto, T., 1992. Moment estimators for the beta-binomial distribution. Journal of applied statistics, 19(2), pp.273-283.
+
+Zou, G., Donner, A., 2004 Confidence interval estimation of the intraclass correlation coefficient for binary outcome data, Biometrics, 60(3), pp.807-811.
 }
 \seealso{
 \code{\link{rcbin}}
 }
+\author{
+Akhtar Hossain \email{mhossain@email.sc.edu}
 
+Hirshikesh Chakraborty \email{rishi.c@duke.edu}
+}

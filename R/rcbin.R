@@ -1,16 +1,16 @@
 #' Generates correlated binary cluster data
 #'
 #' Generates correrlated binary cluster data given value of Intracluster Correlation, proportion of event and it's variation, number of clusters, cluster size and variation in cluster size
-#' @param prop A numeric value between 0 to 1 denoting assumed proportion of event of interest, default is 0.5
-#' @param prvar A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default is 0
+#' @param prop A numeric value between 0 to 1 denoting assumed proportion of event in interest, default value is 0.5
+#' @param prvar A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default value is 0
 #' @param noc A numeric value telling the number of clusters to be generated
-#' @param csize A numerical value denoting desired cluster size
-#' @param csvar A numerical value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}), default is 0
-#' @param rho A numerical value between 0 to 1 denoting desired level of Intracluster Correlation
-#' @return A data frame with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
+#' @param csize A numeric value denoting desired cluster size
+#' @param csvar A numeric value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}), default value is 0
+#' @param rho A numeric value between 0 to 1 denoting desired level of Intracluster Correlation
+#' @return A dataframe with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
 #'
 #' @author Akhtar Hossain \email{mhossain@email.sc.edu}
-#'
+#' @author Hrishikesh Chakraborty \email{rishi.c@duke.edu}
 #'
 #' @seealso \code{\link{iccbin}}
 #'
@@ -20,6 +20,8 @@
 #' @importFrom stats rnorm rbinom
 #'
 #' @export
+#'
+
 
 rcbin <- function(prop = .5, prvar = 0, noc, csize, csvar = 0, rho){
   cluster <- c(); x <- c()
@@ -32,11 +34,11 @@ rcbin <- function(prop = .5, prvar = 0, noc, csize, csvar = 0, rho){
       csizen <- abs(round(csize + (csize*csvar)*rnorm(1)))
     }
     # Selecting individual cluster properties
-    min_prop <- prop - round(prop*prvar, 2)
-    max_prop <- prop + round(prop*prvar, 2)
-    propn <- abs(round(prop + (prop*prvar)*rnorm(1), 2))
+    min_prop <- prop - prop*prvar
+    max_prop <- prop + prop*prvar
+    propn <- abs(prop + (prop*prvar)*rnorm(1))
     while(propn < min_prop | propn > max_prop){
-      propn <- abs(round(prop + (prop*prvar)*rnorm(1), 2))
+      propn <- abs(prop + (prop*prvar)*rnorm(1))
     }
     # Generating binary data
     ri <- sqrt(rho)
@@ -51,9 +53,6 @@ rcbin <- function(prop = .5, prvar = 0, noc, csize, csvar = 0, rho){
   cbcdata <- data.frame(cid = as.factor(cluster), y = x)
   return(cbcdata)
 }
-
-
-
 
 
 

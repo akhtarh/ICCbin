@@ -7,20 +7,20 @@
 rcbin(prop = 0.5, prvar = 0, noc, csize, csvar = 0, rho)
 }
 \arguments{
-\item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event of interest, default is 0.5}
+\item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event in interest, default value is 0.5}
 
-\item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default is 0}
+\item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default value is 0}
 
 \item{noc}{A numeric value telling the number of clusters to be generated}
 
-\item{csize}{A numerical value denoting desired cluster size}
+\item{csize}{A numeric value denoting desired cluster size}
 
-\item{csvar}{A numerical value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}), default is 0}
+\item{csvar}{A numeric value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}), default value is 0}
 
-\item{rho}{A numerical value between 0 to 1 denoting desired level of Intracluster Correlation}
+\item{rho}{A numeric value between 0 to 1 denoting desired level of Intracluster Correlation}
 }
 \value{
-A data frame with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
+A dataframe with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
 }
 \description{
 Generates correrlated binary cluster data given value of Intracluster Correlation, proportion of event and it's variation, number of clusters, cluster size and variation in cluster size
@@ -29,10 +29,11 @@ Generates correrlated binary cluster data given value of Intracluster Correlatio
 rcbin(prop = .4, prvar = .2, noc = 30, csize = 20, csvar = .2, rho = .2)
 
 }
-\author{
-Akhtar Hossain \email{mhossain@email.sc.edu}
-}
 \seealso{
 \code{\link{iccbin}}
 }
+\author{
+Akhtar Hossain \email{mhossain@email.sc.edu}
 
+Hrishikesh Chakraborty \email{rishi.c@duke.edu}
+}
