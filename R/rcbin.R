@@ -26,14 +26,14 @@
 rcbin <- function(prop = .5, prvar = 0, noc, csize, csvar = 0, rho){
   cluster <- c(); x <- c()
   for(i in 1:noc){
-    # Selecting individual cluster sizes
+    # Selecting cluster size
     min_csize <- csize - round(csize*csvar)
     max_csize <- csize + round(csize*csvar)
     csizen <- abs(round(csize + (csize*csvar)*rnorm(1)))
     while(csizen < min_csize | csizen > max_csize){
       csizen <- abs(round(csize + (csize*csvar)*rnorm(1)))
     }
-    # Selecting individual cluster event proportion
+    # Selecting event proportion
     min_prop <- prop - prop*prvar
     max_prop <- prop + prop*prvar
     propn <- abs(prop + (prop*prvar)*rnorm(1))

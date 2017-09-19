@@ -67,7 +67,7 @@
 #' iccbin(cid = cid, y = y, data = bccdata)
 #' iccbin(cid = cid, y = y, data = bccdata, method = c("aov", "fc"), ci.type = "fc")
 #'
-#' @importFrom stats aggregate na.omit qnorm
+#' @importFrom stats aggregate na.omit qnorm binomial var
 #'
 #' @export
 #'
@@ -546,7 +546,7 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
 
   # Model Linearization and Monte Carlo Simulation Methods; Goldstein et al. (2002)
   if("lin" %in% method | "sim" %in% method){
-    if (!requireNamespace("lme4", quietly = TRUE)){
+    if(!requireNamespace("lme4", quietly = TRUE)){
       stop("Package 'lme4' is needed for methods 'lin' and 'sim'. Please install it.",
            call. = FALSE)
     }
