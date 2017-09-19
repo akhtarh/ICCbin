@@ -1,28 +1,28 @@
-#' Estimate Intracluster Correlation coefficient (ICC) and it's confidence intervals
+#' Estimates Intracluster Correlation coefficients (ICC) and it's confidence intervals (CI)
 #'
-#' Estimates Intracluster Correlation coefficients in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
+#' Estimates Intracluster Correlation coefficients (ICC) in 16 different methods and it's confidence intervals (CI) in 5 different methods given the data on cluster labels and outcomes
 #'
 #' @param cid Column name indicating cluster id in the dataframe \code{data}
 #' @param y Column name indicating binary response in the dataframe \code{data}
-#' @param data A dataframe containing \code{code} and \code{y}
-#' @param method The method to be used to compute ICC. A single or multiple methods can be used together. By default, all 14 methods will be used. See Details section for more.
-#' @param ci.type Type of confidence interval to be computed. By default all 4 types will be reported. See Detail section for more
-#' @param alpha The significance level to be used when computing confidence interval. Default value is 0.05
+#' @param data A dataframe containing \code{cid} and \code{y}
+#' @param method The method to be used to compute ICC. A single or multiple methods can be used at a time. By default, all 16 methods will be used. See Details for more.
+#' @param ci.type Type of confidence interval to be computed. By default all 5 types will be reported. See Details for more
+#' @param alpha The significance level to be used while computing confidence interval. Default value is 0.05
 #' @param kappa Value of Kappa to be used in computing Stabilized ICC when the method \code{stab} is chosen. Default value is 0.45
-#' @param nAGQ An integer scaler, as in \code{glmer} function of package \code{lme4}, denoting the number of points per axis for evaluating the adaptive Gauss-Hermite approximation to the log-likelihood. Defaults value us 1.
+#' @param nAGQ An integer scaler, as in \code{glmer} function of package \code{lme4}, denoting the number of points per axis for evaluating the adaptive Gauss-Hermite approximation to the log-likelihood.
 #' Used when the method \code{lin} is chosen. Default value is 1
-#' @param M Number of Monte Carlo replicates used in method \code{sim}. Default is 1000
+#' @param M Number of Monte Carlo replicates used in ICC computation method \code{sim}. Default is 1000
 #'
 #' @details If in the dataframe, the cluster id (\code{cid}) is not a factor, it will be changed to a factor and a warning message will be given
 #' @details If estimate of ICC in any method is outside the interval [0, 1], the estimate and corresponding confidence interval (if appropriate) will not be provided and warning messages will be produced
-#' @details If the lower limit of any confidence interval is below 0 and upper limit is above 1, they will be replaced by 0 and 1 respectively and warning message will be produced
+#' @details If the lower limit of any confidence interval is below 0 and upper limit is above 1, they will be replaced by 0 and 1 respectively and a warning message will be produced
 #' @details Method \code{aov} computes the analysis of variance estimate of ICC. This estimator was originally proposed for continuous variables, but various authors (e.g. Elston, 1977) have suggested it's use for binary variables
 #' @details Method \code{aovs} gives estimate of ICC using a modification of analysis of variance technique (see Fleiss, 1981)
-#' @details Method \code{keq} computes moment estimate of ICC suggested by Kleinman (1973), uses equal weight, \eqn{w_{i} = 1/k} for each of \eqn{k} clusters
+#' @details Method \code{keq} computes moment estimate of ICC suggested by Kleinman (1973), uses equal weight \eqn{w_{i} = 1/k}, for each of \eqn{k} clusters
 #' @details Method \code{kpr} computes moment estimate of ICC suggested by Kleinman (1973), uses weights proportional to cluster size \eqn{w_{i} = n_{i}/N}
 #' @details Method \code{keqs} gives a modified moment estimate of ICC with equal weights (\code{keq}) (see Kleinman, 1973)
 #' @details Method \code{kprs} gives a modified moment estimate of ICC with weights proportional to cluster size (\code{kpr}) (see Kleinman, 1973)
-#' @details Method \code{stab} provides a stabilizestimate of ICC proposed by Tamura and Young (1987)
+#' @details Method \code{stab} provides a stabilizd estimate of ICC proposed by Tamura and Young (1987)
 #' @details Method \code{ub} computes moment estimate of ICC from an unbiased estimating equation (see Yamamoto and Yanagimoto, 1992)
 #' @details Method \code{fc} gives Fleiss-Cuzick estimate of ICC (see Fleiss and Cuzick, 1979)
 #' @details Method \code{mak} computes Mak's estimate of ICC (see Mak, 1988)
@@ -33,7 +33,7 @@
 #' @details Method \code{lin} estimates ICC using model linearization proposed by Goldstein et al. (2002)
 #' @details Method \code{sim} estimates ICC using Monte Carlo simulation proposed by Goldstein et al. (2002)
 #' @details CI type \code{aov} computes confidence interval for ICC using Simith's large sample approximation (see Smith, 1957)
-#' @details CI type \code{wal} computes confidence interval for ICC using modified Wald test, see Zou and Donner (2004).
+#' @details CI type \code{wal} computes confidence interval for ICC using modified Wald test (see Zou and Donner, 2004).
 #' @details CI type \code{fc} gives Fleiss-Cuzick confidence interval for ICC (see Fleiss and Cuzick, 1979; and Zou and Donner, 2004)
 #' @details CI type \code{peq} estimates confidence interval for ICC based on direct calculation of correlation between observations within clusters (see Zou and Donner, 2004; and Wu, Crespi, and Wong, 2012)
 #' @details CI type \code{rm} gives confidence interval for ICC using resampling method by Chakraborty and Sen (2016)
@@ -186,7 +186,7 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
       t0.zd <- (((k - 1)*n0*N*(N - k))^2)/lambda^4
       t1.zd <- 2*k + (1/(piio*(1 - piio)) - 6)*sum(1/ni)
       t2.zd <- ((1/(piio*(1 - piio)) - 6)*sum(1/ni) - 2*N + 7*k - (8*(k^2))/N - (2*k*(1 - k/N))/(piio*(1 - piio)) +
-        (1/(piio*(1 - piio)) - 6)*sum(ni^2))*rho.aov
+        (1/(piio*(1 - piio)) - 3)*sum(ni^2))*rho.aov
       t3.zd <- ((N^2 - k^2)/(piio*(1 - piio)) - 2*N - k + (4*(k^2))/N +
         (7 - 8*k/N - (2*(1 - k/N))/(piio*(1 - piio)))*sum(ni^2))*rho.aov^2
       t4.zd <- (1/(piio*(1 - piio)) - 4)*(((N - k)/N)^2)*(sum(ni^2) - N)*rho.aov^3
@@ -449,7 +449,7 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
   n <- sum(ni)
   u1 <- sum(yi)/N
   alp <- u1
-  # Within cluster paire probabilities
+  # Within cluster pairwise probabilities
   ucid <- sort(unique(cid))
   nw11 <- 0; nw10 <- 0; nw01 <- 0; nw00 <- 0
   for(i in 1:k){
@@ -471,6 +471,8 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
       else{nw11 <- nw11 + 1}
     }
   }
+  # The frequencies are doubled as originiallny they were computed
+  # as half in above loop
   nw11n <- nw11*2; nw00n <- nw00*2
   nw10n <- nw10 + nw01; nw01n <- nw01 + nw10
   uw11 <- nw11n/sum(ni*(ni - 1))
@@ -479,7 +481,7 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
   uw00 <- nw00n/sum(ni*(ni - 1))
   tw <- uw11 + uw00 - uw10 - uw01
 
-  # Between cluster paire probabilities
+  # Between cluster pairwise probabilities
   nb11 <- 0; nb10 <- 0; nb01 <- 0; nb00 <- 0
   for(i in 1:(k - 1)){
     dti <- dt[cid == ucid[i], ]
@@ -499,6 +501,8 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
       }
     }
   }
+  # The frequencies are doubled as originiallny they were computed
+  # as half in above loop
   nb11n <- nb11*2; nb00n <- nb00*2
   nb10n <- nb10 + nb01; nb01n <- nb01 + nb10
   ub11 <- nb11n/(N*(N - 1) - sum(ni*(ni - 1)))

@@ -7,15 +7,15 @@
 rcbin(prop = 0.5, prvar = 0, noc, csize, csvar = 0, rho)
 }
 \arguments{
-\item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event in interest, default value is 0.5}
+\item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event in interest. Default value is 0.5}
 
-\item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default value is 0}
+\item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}). Default value is 0}
 
 \item{noc}{A numeric value telling the number of clusters to be generated}
 
 \item{csize}{A numeric value denoting desired cluster size}
 
-\item{csvar}{A numeric value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}), default value is 0}
+\item{csvar}{A numeric value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}). Default value is 0}
 
 \item{rho}{A numeric value between 0 to 1 denoting desired level of Intracluster Correlation}
 }

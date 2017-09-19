@@ -2,7 +2,7 @@
 % Please edit documentation in R/iccbin.R
 \name{iccbin}
 \alias{iccbin}
-\title{Estimate Intracluster Correlation coefficient (ICC) and it's confidence intervals}
+\title{Estimates Intracluster Correlation coefficients (ICC) and it's confidence intervals (CI)}
 \usage{
 iccbin(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", "keqs",
   "kprs", "stab", "ub", "fc", "mak", "peq", "pgp", "ppr", "rm", "lin", "sim"),
@@ -14,40 +14,40 @@ iccbin(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", "keqs",
 
 \item{y}{Column name indicating binary response in the dataframe \code{data}}
 
-\item{data}{A dataframe containing \code{code} and \code{y}}
+\item{data}{A dataframe containing \code{cid} and \code{y}}
 
-\item{method}{The method to be used to compute ICC. A single or multiple methods can be used together. By default, all 14 methods will be used. See Details section for more.}
+\item{method}{The method to be used to compute ICC. A single or multiple methods can be used at a time. By default, all 16 methods will be used. See Details for more.}
 
-\item{ci.type}{Type of confidence interval to be computed. By default all 4 types will be reported. See Detail section for more}
+\item{ci.type}{Type of confidence interval to be computed. By default all 5 types will be reported. See Details for more}
 
-\item{alpha}{The significance level to be used when computing confidence interval. Default value is 0.05}
+\item{alpha}{The significance level to be used while computing confidence interval. Default value is 0.05}
 
 \item{kappa}{Value of Kappa to be used in computing Stabilized ICC when the method \code{stab} is chosen. Default value is 0.45}
 
-\item{nAGQ}{An integer scaler, as in \code{glmer} function of package \code{lme4}, denoting the number of points per axis for evaluating the adaptive Gauss-Hermite approximation to the log-likelihood. Defaults value us 1.
+\item{nAGQ}{An integer scaler, as in \code{glmer} function of package \code{lme4}, denoting the number of points per axis for evaluating the adaptive Gauss-Hermite approximation to the log-likelihood.
 Used when the method \code{lin} is chosen. Default value is 1}
 
-\item{M}{Number of Monte Carlo replicates used in method \code{sim}. Default is 1000}
+\item{M}{Number of Monte Carlo replicates used in ICC computation method \code{sim}. Default is 1000}
 }
 \value{
 \item{estimates}{A dataframe containing the name of methods used and corresponding estimates of Intracluster Correlation coefficients}
 \item{ci}{A dataframe containing names of confidence interval types and corresponding estimated confidence intervals}
 }
 \description{
-Estimates Intracluster Correlation coefficients in 14 different methods and it's confidence intervals in 4 different methods given the data on cluster labels and outcomes
+Estimates Intracluster Correlation coefficients (ICC) in 16 different methods and it's confidence intervals (CI) in 5 different methods given the data on cluster labels and outcomes
 }
 \details{
 If in the dataframe, the cluster id (\code{cid}) is not a factor, it will be changed to a factor and a warning message will be given
 
 If estimate of ICC in any method is outside the interval [0, 1], the estimate and corresponding confidence interval (if appropriate) will not be provided and warning messages will be produced
 
-If the lower limit of any confidence interval is below 0 and upper limit is above 1, they will be replaced by 0 and 1 respectively and warning message will be produced
+If the lower limit of any confidence interval is below 0 and upper limit is above 1, they will be replaced by 0 and 1 respectively and a warning message will be produced
 
 Method \code{aov} computes the analysis of variance estimate of ICC. This estimator was originally proposed for continuous variables, but various authors (e.g. Elston, 1977) have suggested it's use for binary variables
 
 Method \code{aovs} gives estimate of ICC using a modification of analysis of variance technique (see Fleiss, 1981)
 
-Method \code{keq} computes moment estimate of ICC suggested by Kleinman (1973), uses equal weight, \eqn{w_{i} = 1/k} for each of \eqn{k} clusters
+Method \code{keq} computes moment estimate of ICC suggested by Kleinman (1973), uses equal weight \eqn{w_{i} = 1/k}, for each of \eqn{k} clusters
 
 Method \code{kpr} computes moment estimate of ICC suggested by Kleinman (1973), uses weights proportional to cluster size \eqn{w_{i} = n_{i}/N}
 
@@ -55,7 +55,7 @@ Method \code{keqs} gives a modified moment estimate of ICC with equal weights (\
 
 Method \code{kprs} gives a modified moment estimate of ICC with weights proportional to cluster size (\code{kpr}) (see Kleinman, 1973)
 
-Method \code{stab} provides a stabilizestimate of ICC proposed by Tamura and Young (1987)
+Method \code{stab} provides a stabilizd estimate of ICC proposed by Tamura and Young (1987)
 
 Method \code{ub} computes moment estimate of ICC from an unbiased estimating equation (see Yamamoto and Yanagimoto, 1992)
 
@@ -77,7 +77,7 @@ Method \code{sim} estimates ICC using Monte Carlo simulation proposed by Goldste
 
 CI type \code{aov} computes confidence interval for ICC using Simith's large sample approximation (see Smith, 1957)
 
-CI type \code{wal} computes confidence interval for ICC using modified Wald test, see Zou and Donner (2004).
+CI type \code{wal} computes confidence interval for ICC using modified Wald test (see Zou and Donner, 2004).
 
 CI type \code{fc} gives Fleiss-Cuzick confidence interval for ICC (see Fleiss and Cuzick, 1979; and Zou and Donner, 2004)
 
