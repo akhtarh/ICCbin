@@ -9,7 +9,11 @@ rcbin(prop = 0.5, prvar = 0, noc, csize, csvar = 0, rho)
 \arguments{
 \item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event in interest. Default value is 0.5}
 
+<<<<<<< HEAD
 \item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prop}). Default value is 0}
+=======
+\item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prvar}). Default value is 0}
+>>>>>>> cf361792d960602af90267c7b4cd9270a62b1462
 
 \item{noc}{A numeric value telling the number of clusters to be generated}
 
