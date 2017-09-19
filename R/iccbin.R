@@ -585,8 +585,8 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
   estimates <- data.frame(Methods = meth, ICC = est); row.names(estimates) <- NULL
   ci <- data.frame(Type = ci.typ, LowerCI = lci, UpperCI = uci); row.names(ci) <- NULL
   list(estimates = estimates, ci = ci)
-  cat("\n", "ICC Estimates:", "\n"); print(estimates)
-  cat("\n", paste(100*(1 - alpha), "%", sep = ""), "Confidence Intervals:", "\n"); print(ci)
+  #cat("\n", "ICC Estimates:", "\n"); print(estimates)
+  #cat("\n", paste(100*(1 - alpha), "%", sep = ""), "Confidence Intervals:", "\n"); print(ci)
 } # End of function ICCbin
 
 
