@@ -1,12 +1,16 @@
 #' Generates correlated binary cluster data
 #'
 #' Generates correrlated binary cluster data given value of Intracluster Correlation, proportion of event and it's variation, number of clusters, cluster size and variation in cluster size
-#' @param prop A numeric value between 0 to 1 denoting assumed proportion of event in interest. Default value is 0.5
-#' @param prvar A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prop}). Default value is 0
+#' @param prop A numeric value between 0 and 1 denoting assumed proportion of event in interest, default value is 0.5. See Detail
+#' @param prvar A numeric value between 0 and 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default value is 0. See Detail
 #' @param noc A numeric value telling the number of clusters to be generated
-#' @param csize A numeric value denoting desired cluster size
-#' @param csvar A numeric value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}). Default value is 0
-#' @param rho A numeric value between 0 to 1 denoting desired level of Intracluster Correlation
+#' @param csize A numeric value denoting desired cluster size. See Deatil
+#' @param csvar A numeric value between 0 and 1 denoting percent of variation in cluster sizes (\code{csize}), default value is 0. See Detail
+#' @param rho A numeric value between 0 and 1 denoting desired level of Intracluster Correlation
+#' 
+#' @details The minimum and maximum values of event proportion (\code{prop}) will be taken as 0 and 1 respectively in cases where it exceeds the valid limits (0, 1) due to larger value of percent variation (\code{prvar}) supplied
+#' @details The minimum value of cluster size (\code{csize}) will be taken as 2 in cases where it goes below 2 due to larger value of percent variation (\code{csvar}) supplied
+#' 
 #' @return A dataframe with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
 #'
 #' @author Akhtar Hossain \email{mhossain@email.sc.edu}
@@ -20,22 +24,23 @@
 #' @importFrom stats rnorm rbinom
 #'
 #' @export
-#'
-
+#' 
 
 rcbin <- function(prop = .5, prvar = 0, noc, csize, csvar = 0, rho){
   cluster <- c(); x <- c()
   for(i in 1:noc){
-    # Selecting cluster size
-    min_csize <- csize - round(csize*csvar)
-    max_csize <- csize + round(csize*csvar)
+    # Selecting individual cluster sizes
+    min_csize <- ifelse((csize - round(csize*csvar)) >= 2, csize - round(csize*csvar), 2)
+    #max_csize <- csize + round(csize*csvar) 
+    #Omitting to open cluster size to be as large it can be 
+    #Will benefit to generate skewed cluster size distribution
     csizen <- abs(round(csize + (csize*csvar)*rnorm(1)))
-    while(csizen < min_csize | csizen > max_csize){
+    while(csizen < min_csize){
       csizen <- abs(round(csize + (csize*csvar)*rnorm(1)))
     }
-    # Selecting event proportion
-    min_prop <- prop - prop*prvar
-    max_prop <- prop + prop*prvar
+    # Selecting individual cluster properties
+    min_prop <- ifelse((prop - prop*prvar) >= 0, prop - prop*prvar, 0)
+    max_prop <- ifelse((prop + prop*prvar) <= 1, prop + prop*prvar, 1)
     propn <- abs(prop + (prop*prvar)*rnorm(1))
     while(propn < min_prop | propn > max_prop){
       propn <- abs(prop + (prop*prvar)*rnorm(1))

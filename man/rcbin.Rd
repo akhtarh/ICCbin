@@ -7,23 +7,28 @@
 rcbin(prop = 0.5, prvar = 0, noc, csize, csvar = 0, rho)
 }
 \arguments{
-\item{prop}{A numeric value between 0 to 1 denoting assumed proportion of event in interest. Default value is 0.5}
+\item{prop}{A numeric value between 0 and 1 denoting assumed proportion of event in interest, default value is 0.5. See Detail}
 
-\item{prvar}{A numeric value between 0 to 1 denoting percent of variation in assumed proportion of event (\code{prop}). Default value is 0}
+\item{prvar}{A numeric value between 0 and 1 denoting percent of variation in assumed proportion of event (\code{prvar}), default value is 0. See Detail}
 
 \item{noc}{A numeric value telling the number of clusters to be generated}
 
-\item{csize}{A numeric value denoting desired cluster size}
+\item{csize}{A numeric value denoting desired cluster size. See Deatil}
 
-\item{csvar}{A numeric value between 0 to 1 denoting percent of variation in cluster sizes (\code{csize}). Default value is 0}
+\item{csvar}{A numeric value between 0 and 1 denoting percent of variation in cluster sizes (\code{csize}), default value is 0. See Detail}
 
-\item{rho}{A numeric value between 0 to 1 denoting desired level of Intracluster Correlation}
+\item{rho}{A numeric value between 0 and 1 denoting desired level of Intracluster Correlation}
 }
 \value{
 A dataframe with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
 }
 \description{
 Generates correrlated binary cluster data given value of Intracluster Correlation, proportion of event and it's variation, number of clusters, cluster size and variation in cluster size
+}
+\details{
+The minimum and maximum values of event proportion (\code{prop}) will be taken as 0 and 1 respectively in cases where it exceeds the valid limits (0, 1) due to larger value of percent variation (\code{prvar}) supplied
+
+The minimum value of cluster size (\code{csize}) will be taken as 2 in cases where it goes below 2 due to larger value of percent variation (\code{csvar}) supplied
 }
 \examples{
 rcbin(prop = .4, prvar = .2, noc = 30, csize = 20, csvar = .2, rho = .2)
