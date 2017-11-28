@@ -1,12 +1,14 @@
 Package: ICCbin
-Version: 1.1.1
+Version: 1.1.2
 Date: 2017-11-13
 Type: Package
 Title: Facilitates Clustered Binary Data Generation, and Estimation of Intracluster Correlation Coefficient (ICC) for Binary Data
 Authors@R: c(person("Akhtar", "Hossain", role = c("aut", "cre"),
 		     email = "mhossain@email.sc.edu"),
 	       person("Hrishikesh", "Chakraborty", role = "aut",
-	       email = "rishic@mailbox.sc.edu"))
+	       email = "rishic@mailbox.sc.edu"),
+		person("Aaron", "Rudkin", role="ctb",
+		email = "rudkin@ucla.edu"))
 Author: Akhtar Hossain [aut, cre],
         Hrishikesh Chakraborty [aut]
 Maintainer: Akhtar Hossain <mhossain@email.sc.edu>
