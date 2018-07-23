@@ -7,10 +7,10 @@
 #' @param csize A numeric value denoting desired cluster size. See Deatil
 #' @param csvar A numeric value between 0 and 1 denoting percent of variation in cluster sizes (\code{csize}), default value is 0. See Detail
 #' @param rho A numeric value between 0 and 1 denoting desired level of Intracluster Correlation
-#' 
+#'
 #' @details The minimum and maximum values of event proportion (\code{prop}) will be taken as 0 and 1 respectively in cases where it exceeds the valid limits (0, 1) due to larger value of percent variation (\code{prvar}) supplied
 #' @details The minimum value of cluster size (\code{csize}) will be taken as 2 in cases where it goes below 2 due to larger value of percent variation (\code{csvar}) supplied
-#' 
+#'
 #' @return A dataframe with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
 #'
 #' @author Akhtar Hossain \email{mhossain@email.sc.edu}
@@ -24,41 +24,33 @@
 #' @importFrom stats rnorm rbinom
 #'
 #' @export
-#' 
+#'
 
-rcbin <- function(prop = .5, prvar = 0, noc, csize, csvar = 0, rho){
-  cluster <- c(); x <- c()
-  for(i in 1:noc){
-    # Selecting individual cluster sizes
-    min_csize <- ifelse((csize - round(csize*csvar)) >= 2, csize - round(csize*csvar), 2)
-    #max_csize <- csize + round(csize*csvar) 
-    #Omitting to open cluster size to be as large it can be 
-    #Will benefit to generate skewed cluster size distribution
-    csizen <- abs(round(csize + (csize*csvar)*rnorm(1)))
-    while(csizen < min_csize){
-      csizen <- abs(round(csize + (csize*csvar)*rnorm(1)))
-    }
-    # Selecting individual cluster properties
-    min_prop <- ifelse((prop - prop*prvar) >= 0, prop - prop*prvar, 0)
-    max_prop <- ifelse((prop + prop*prvar) <= 1, prop + prop*prvar, 1)
-    propn <- abs(prop + (prop*prvar)*rnorm(1))
-    while(propn < min_prop | propn > max_prop){
-      propn <- abs(prop + (prop*prvar)*rnorm(1))
-    }
-    # Generating binary data
-    ri <- sqrt(rho)
-    zi <- rbinom(n = 1, size = 1, prob = propn)
-    for(j in 1:csizen){
-      yij <- rbinom(n = 1, size = 1, prob = propn)
-      uij <- rbinom(n = 1, size = 1, prob = ri)
-      xij <- (1 - uij)*yij + uij*zi
-      cluster <- c(cluster, i); x <- c(x, xij)
-    }
-  }
-  cbcdata <- data.frame(cid = as.factor(cluster), y = x)
-  return(cbcdata)
+rcbin <- function (prop = 0.5, prvar = 0, noc, csize, csvar = 0, rho)
+{
+  # Select individual cluster sizes
+  cluster_sizes <- pmax(abs(round(csize + (csize * csvar * rnorm(noc)))),
+                        2)
+  # How many total units will we have?
+  total_n <- sum(cluster_sizes)
+  # Cluster level proportions
+  cluster_proportions = pmin(pmax(abs(prop + (prop * prvar) * rnorm(noc)),
+                                  0),
+                             1)
+  # Cluster ID generation
+  cluster_id = rep(1:noc, times=cluster_sizes)
+  # Individual proportion is just an expansion
+  prop_individuals = rep(cluster_proportions, times = cluster_sizes)
+  # Generate cluster level z_is and pad to be z_ijs
+  z_ij = rep(rbinom(n = noc, size=1, prob = cluster_proportions),
+             times = cluster_sizes)
+  # Individual unit assignments
+  y_ij = rbinom(n = total_n, size = 1, prob = prop_individuals)
+  # Switching dummy
+  u_ij = rbinom(n = total_n, size = 1, prob = sqrt(rho))
+  # Assume x_ij based on switching dummy
+  x_ij = ifelse(u_ij, z_ij, y_ij)
+
+  # Return data
+  data.frame(cid = as.factor(cluster_id), y = x_ij)
 }
-
-
-
-
