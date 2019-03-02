@@ -4,10 +4,10 @@
 \alias{iccbin}
 \title{Estimates Intracluster Correlation coefficients (ICC) and it's confidence intervals (CI)}
 \usage{
-iccbin(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", "keqs",
-  "kprs", "stab", "ub", "fc", "mak", "peq", "pgp", "ppr", "rm", "lin", "sim"),
-  ci.type = c("aov", "wal", "fc", "peq", "rm"), alpha = 0.05,
-  kappa = 0.45, nAGQ = 1, M = 1000)
+iccbin(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr",
+  "keqs", "kprs", "stab", "ub", "fc", "mak", "peq", "pgp", "ppr", "rm",
+  "lin", "sim"), ci.type = c("aov", "wal", "fc", "peq", "rm"),
+  alpha = 0.05, kappa = 0.45, nAGQ = 1, M = 1000)
 }
 \arguments{
 \item{cid}{Column name indicating cluster id in the dataframe \code{data}}

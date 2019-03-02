@@ -23,7 +23,7 @@ rcbin(prop = 0.5, prvar = 0, noc, csize, csvar = 0, rho)
 A dataframe with two columns presenting cluster id (\code{cid}) and a binary response (\code{y}) variables
 }
 \description{
-Generates correrlated binary cluster data given value of Intracluster Correlation, proportion of event and it's variation, number of clusters, cluster size and variation in cluster size
+Generates correrlated binary cluster data given value of Intracluster Correlation, proportion of event, perceent of variation in event proportion, number of clusters, cluster size and percent of variation in cluster size
 }
 \details{
 The minimum and maximum values of event proportion (\code{prop}) will be taken as 0 and 1 respectively in cases where it exceeds the valid limits (0, 1) due to larger value of percent variation (\code{prvar}) supplied
@@ -34,8 +34,11 @@ The minimum value of cluster size (\code{csize}) will be taken as 2 in cases whe
 rcbin(prop = .4, prvar = .2, noc = 30, csize = 20, csvar = .2, rho = .2)
 
 }
+\references{
+Lunn, A.D. and Davies, S.J., 1998. A note on generating correlated binary variables. Biometrika, 85(2), pp.487-490.
+}
 \seealso{
-\code{\link{iccbin}}
+\code{\link{rcbin1}} \code{\link{iccbin}}
 }
 \author{
 Akhtar Hossain \email{mhossain@email.sc.edu}

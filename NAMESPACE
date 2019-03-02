@@ -2,10 +2,13 @@
 
 export(iccbin)
 export(rcbin)
+export(rcbin1)
 importFrom(stats,aggregate)
 importFrom(stats,binomial)
 importFrom(stats,na.omit)
 importFrom(stats,qnorm)
+importFrom(stats,rbeta)
 importFrom(stats,rbinom)
+importFrom(stats,rnbinom)
 importFrom(stats,rnorm)
 importFrom(stats,var)

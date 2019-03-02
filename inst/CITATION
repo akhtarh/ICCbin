@@ -1,0 +1,42 @@
+if (!exists("meta") || is.null(meta)) meta <- packageDescription("ICCbin")
+
+citHeader("To cite package", sQuote(meta$Package), "in publications use:")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+
+citEntry(entry = "Manual",
+  title        = "ICCbin: Facilitates Clustered Binary Data Generation, and Estimation of Intracluster Correlation Coefficient (ICC) for Binary Data",
+  author       = personList(as.person("Akhtar Hossain"), as.person("Hrishikesh Chakraborty")),
+  note         = "R package version 1.2",
+  year         = "2019",
+  url          = "https://CRAN.R-project.org/package=ICCbin",
+
+  textVersion  =
+  paste("Hossain, A., & Chakraborty, H. (2019).",
+        "ICCbin: Facilitates Clustered Binary Data Generation, and Estimation of Intracluster Correlation Coefficient (ICC) for Binary Data.",
+        "R package version 1.2.",
+        "URL https://CRAN.R-project.org/package=ICCbin.")
+)
+
+
+
+citEntry(entry = "Article",
+  title        = "R package to Estimate Intracluster Correlation Coefficient with Confidence Interval for Binary Data",
+  author       = personList(as.person("Hrishikesh Chakraborty"), as.person("Akhtar Hossain")),
+  journal      = "Computer Methods and Programs in Biomedicine",
+  year         = "2018",
+  volume       = "155",
+  pages        = "85--92",
+  url          = "https://www.sciencedirect.com/science/article/pii/S0169260717305771",
+
+  textVersion  =
+  paste("Chakraborty, H., & Hossain, A. (2018).",
+        "R package to Estimate Intracluster Correlation Coefficient with Confidence Interval for Binary Data.",
+        "Computer Methods and Programs in Biomedicine, 155, 85-92.",
+        "URL https://www.sciencedirect.com/science/article/pii/S0169260717305771.")
+)
+
+
+
+citFooter("A BibTeX entry for LaTeX users is toBibtex(citation('ICCbin'))")
