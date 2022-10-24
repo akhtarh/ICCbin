@@ -444,104 +444,106 @@ iccbin <- function(cid, y, data = NULL, method = c("aov", "aovs", "keq", "kpr", 
 
   # ::: Estimators using ressampling method; Chakraborty & Sen (2016) :::
   # U ststistics
-  yi <- aggregate(y, by = list(cid), sum)[ , 2]
-  ni <- as.vector(table(cid))
-  n <- sum(ni)
-  u1 <- sum(yi)/N
-  alp <- u1
-  # Within cluster pairwise probabilities
-  ucid <- sort(unique(cid))
-  nw11 <- 0; nw10 <- 0; nw01 <- 0; nw00 <- 0
-  for(i in 1:k){
-    dti <- dt[cid == ucid[i], ]
-    wsamp1 <- c()
-    wsamp2 <- c()
-    for(m in 1:(nrow(dti) -1)){
-      wsamp1 <- c(wsamp1, rep(dti$y[m], length((m + 1):nrow(dti))))
-      wsamp2 <- c(wsamp2, dti$y[(m + 1):nrow(dti)])
-    }
-    wsamp <- rbind(wsamp1, wsamp2)
-    for(j in 1:ncol(wsamp)){
-      if(all(wsamp[ , j] == c(0, 0)) == TRUE){
-        nw00 <- nw00 + 1}
-      else if(all(wsamp[ , j] == c(0, 1)) == TRUE){
-        nw01 <- nw01 + 1}
-      else if(all(wsamp[ , j] == c(1, 0)) == TRUE){
-        nw10 <- nw10 + 1}
-      else{nw11 <- nw11 + 1}
-    }
-  }
-  # The frequencies are doubled as originiallny they were computed
-  # as half in above loop
-  nw11n <- nw11*2; nw00n <- nw00*2
-  nw10n <- nw10 + nw01; nw01n <- nw01 + nw10
-  uw11 <- nw11n/sum(ni*(ni - 1))
-  uw10 <- nw10n/sum(ni*(ni - 1))
-  uw01 <- nw01n/sum(ni*(ni - 1))
-  uw00 <- nw00n/sum(ni*(ni - 1))
-  tw <- uw11 + uw00 - uw10 - uw01
-
-  # Between cluster pairwise probabilities
-  nb11 <- 0; nb10 <- 0; nb01 <- 0; nb00 <- 0
-  for(i in 1:(k - 1)){
-    dti <- dt[cid == ucid[i], ]
-    for(m in (i + 1):k){
-      dtm <- dt[cid == ucid[m], ]
-      bsamp1 <- rep(dti$y, each = nrow(dtm))
-      bsamp2 <-rep(dtm$y, times = nrow(dti))
-      bsamp <- rbind(bsamp1, bsamp2)
-      for(j in 1:ncol(bsamp)){
-        if(all(bsamp[ , j] == c(0, 0)) == TRUE){
-          nb00 <- nb00 + 1}
-        else if(all(bsamp[ , j] == c(0, 1)) == TRUE){
-          nb01 <- nb01 + 1}
-        else if(all(bsamp[ , j] == c(1, 0)) == TRUE){
-          nb10 <- nb10 + 1}
-        else{nb11 <- nb11 + 1}
+  if("rm" %in% method | "rm" %in% ci.type){
+    yi <- aggregate(y, by = list(cid), sum)[ , 2]
+    ni <- as.vector(table(cid))
+    n <- sum(ni)
+    u1 <- sum(yi)/N
+    alp <- u1
+    # Within cluster pairwise probabilities
+    ucid <- sort(unique(cid))
+    nw11 <- 0; nw10 <- 0; nw01 <- 0; nw00 <- 0
+    for(i in 1:k){
+      dti <- dt[cid == ucid[i], ]
+      wsamp1 <- c()
+      wsamp2 <- c()
+      for(m in 1:(nrow(dti) -1)){
+        wsamp1 <- c(wsamp1, rep(dti$y[m], length((m + 1):nrow(dti))))
+        wsamp2 <- c(wsamp2, dti$y[(m + 1):nrow(dti)])
+      }
+      wsamp <- rbind(wsamp1, wsamp2)
+      for(j in 1:ncol(wsamp)){
+        if(all(wsamp[ , j] == c(0, 0)) == TRUE){
+          nw00 <- nw00 + 1}
+        else if(all(wsamp[ , j] == c(0, 1)) == TRUE){
+          nw01 <- nw01 + 1}
+        else if(all(wsamp[ , j] == c(1, 0)) == TRUE){
+          nw10 <- nw10 + 1}
+        else{nw11 <- nw11 + 1}
       }
     }
-  }
-  # The frequencies are doubled as originiallny they were computed
-  # as half in above loop
-  nb11n <- nb11*2; nb00n <- nb00*2
-  nb10n <- nb10 + nb01; nb01n <- nb01 + nb10
-  ub11 <- nb11n/(N*(N - 1) - sum(ni*(ni - 1)))
-  ub10 <- nb10n/(N*(N - 1) - sum(ni*(ni - 1)))
-  ub01 <- nb01n/(N*(N - 1) - sum(ni*(ni - 1)))
-  ub00 <- nb00n/(N*(N - 1) - sum(ni*(ni - 1)))
-  tb <- ub11 + ub00 - ub10 - ub01
+    # The frequencies are doubled as originiallny they were computed
+    # as half in above loop
+    nw11n <- nw11*2; nw00n <- nw00*2
+    nw10n <- nw10 + nw01; nw01n <- nw01 + nw10
+    uw11 <- nw11n/sum(ni*(ni - 1))
+    uw10 <- nw10n/sum(ni*(ni - 1))
+    uw01 <- nw01n/sum(ni*(ni - 1))
+    uw00 <- nw00n/sum(ni*(ni - 1))
+    tw <- uw11 + uw00 - uw10 - uw01
 
-  rho.rm <- (tw - tb)/(4*u1*(1 - u1))
-  if("rm" %in% method){
-    meth <- c(meth, "Resampling Estimate")
-    if(rho.rm < 0 | rho.rm > 1){
-      est <- c(est, "-")
-      warning("ICC Not Estimable by 'Resampling' Method")
-    } else{
-      est <- c(est, rho.rm)
+    # Between cluster pairwise probabilities
+    nb11 <- 0; nb10 <- 0; nb01 <- 0; nb00 <- 0
+    for(i in 1:(k - 1)){
+      dti <- dt[cid == ucid[i], ]
+      for(m in (i + 1):k){
+        dtm <- dt[cid == ucid[m], ]
+        bsamp1 <- rep(dti$y, each = nrow(dtm))
+        bsamp2 <-rep(dtm$y, times = nrow(dti))
+        bsamp <- rbind(bsamp1, bsamp2)
+        for(j in 1:ncol(bsamp)){
+          if(all(bsamp[ , j] == c(0, 0)) == TRUE){
+            nb00 <- nb00 + 1}
+          else if(all(bsamp[ , j] == c(0, 1)) == TRUE){
+            nb01 <- nb01 + 1}
+          else if(all(bsamp[ , j] == c(1, 0)) == TRUE){
+            nb10 <- nb10 + 1}
+          else{nb11 <- nb11 + 1}
+        }
+      }
     }
-  }
+    # The frequencies are doubled as originiallny they were computed
+    # as half in above loop
+    nb11n <- nb11*2; nb00n <- nb00*2
+    nb10n <- nb10 + nb01; nb01n <- nb01 + nb10
+    ub11 <- nb11n/(N*(N - 1) - sum(ni*(ni - 1)))
+    ub10 <- nb10n/(N*(N - 1) - sum(ni*(ni - 1)))
+    ub01 <- nb01n/(N*(N - 1) - sum(ni*(ni - 1)))
+    ub00 <- nb00n/(N*(N - 1) - sum(ni*(ni - 1)))
+    tb <- ub11 + ub00 - ub10 - ub01
 
-  if("rm" %in% ci.type){
-    ci.typ <- c(ci.typ, "Resampling Based Confidence Interval")
-    if(rho.rm < 0 | rho.rm > 1){
-      lci <- c(lci, "-")
-      uci <- c(uci, "-")
-      warning("Resampling Based Confidence Interval for ICC is Not Estimable")
-    } else{
-    t0.rm <- 1/(16*n*square(u1)*square(1 - u1))
-    t1.rm <- 1/(n^2 - sum(ni^2)) + square(2*alp*(1 - alp) + 1)
-    t2.rm <- (alp*(1  -alp)/(sum(ni^2) - n))*((1 + alp - rho.rm*alp)*(alp + rho.rm*(1 - alp)) +
-                                                (1 - alp + rho.rm*alp)*(2 - alp - rho.rm*(1 - alp)) + 2*(1 + rho.rm)*(1 - alp*(1 - alp)*(1 + rho.rm)))
-    t3.rm <- ((alp*(1 - alp)*square(tw - tb)*square(1 - 2*u1))/(square(u1*(1 - u1))))*(1/n + (rho.rm/n^2)*sum(ni*(1 - ni)))
-    var.rho.rm <- t0.rm*(t1.rm + t2.rm + t3.rm)
-    ci.rho.rm <- c(rho.rm - zalpha*sqrt(var.rho.rm), rho.rm + zalpha*sqrt(var.rho.rm))
-    lci <- c(lci, ifelse(ci.rho.rm[1] < 0, 0, ci.rho.rm[1]))
-    uci <- c(uci, ifelse(ci.rho.rm[2] > 1, 1, ci.rho.rm[2]))
-    if(ci.rho.rm[1] < 0 | ci.rho.rm[2] > 1){
-      warning("One or Both of 'Resampling Based' Confidence Limits Fell Outside of [0, 1]")
+    rho.rm <- (tw - tb)/(4*u1*(1 - u1))
+    if("rm" %in% method){
+      meth <- c(meth, "Resampling Estimate")
+      if(rho.rm < 0 | rho.rm > 1){
+        est <- c(est, "-")
+        warning("ICC Not Estimable by 'Resampling' Method")
+      } else{
+        est <- c(est, rho.rm)
+      }
     }
-   }
+
+    if("rm" %in% ci.type){
+      ci.typ <- c(ci.typ, "Resampling Based Confidence Interval")
+      if(rho.rm < 0 | rho.rm > 1){
+        lci <- c(lci, "-")
+        uci <- c(uci, "-")
+        warning("Resampling Based Confidence Interval for ICC is Not Estimable")
+      } else{
+      t0.rm <- 1/(16*n*square(u1)*square(1 - u1))
+      t1.rm <- 1/(n^2 - sum(ni^2)) + square(2*alp*(1 - alp) + 1)
+      t2.rm <- (alp*(1  -alp)/(sum(ni^2) - n))*((1 + alp - rho.rm*alp)*(alp + rho.rm*(1 - alp)) +
+                                                  (1 - alp + rho.rm*alp)*(2 - alp - rho.rm*(1 - alp)) + 2*(1 + rho.rm)*(1 - alp*(1 - alp)*(1 + rho.rm)))
+      t3.rm <- ((alp*(1 - alp)*square(tw - tb)*square(1 - 2*u1))/(square(u1*(1 - u1))))*(1/n + (rho.rm/n^2)*sum(ni*(1 - ni)))
+      var.rho.rm <- t0.rm*(t1.rm + t2.rm + t3.rm)
+      ci.rho.rm <- c(rho.rm - zalpha*sqrt(var.rho.rm), rho.rm + zalpha*sqrt(var.rho.rm))
+      lci <- c(lci, ifelse(ci.rho.rm[1] < 0, 0, ci.rho.rm[1]))
+      uci <- c(uci, ifelse(ci.rho.rm[2] > 1, 1, ci.rho.rm[2]))
+      if(ci.rho.rm[1] < 0 | ci.rho.rm[2] > 1){
+        warning("One or Both of 'Resampling Based' Confidence Limits Fell Outside of [0, 1]")
+      }
+     }
+    }
   }
 
   # Model Linearization and Monte Carlo Simulation Methods; Goldstein et al. (2002)
